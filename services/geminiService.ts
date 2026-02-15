@@ -17,7 +17,8 @@ const getClient = () => {
   // Debug: Log the first 4 chars of the key to help troubleshoot Netlify
   console.log(`NEXUS_AI: Key detected [${apiKey.substring(0, 4)}...]`);
 
-  return new GoogleGenAI(apiKey);
+  // The @google/genai SDK expects an options object
+  return new GoogleGenAI({ apiKey });
 };
 
 export const analyzeCyborg = async (config: CyborgConfiguration): Promise<AnalysisResult> => {
@@ -35,10 +36,11 @@ export const analyzeCyborg = async (config: CyborgConfiguration): Promise<Analys
   `;
 
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const result = await model.generateContent({
+    // In @google/genai, we use models.generateContent directly
+    const result = await genAI.models.generateContent({
+      model: "gemini-1.5-flash",
       contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: {
+      config: {
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
@@ -53,8 +55,8 @@ export const analyzeCyborg = async (config: CyborgConfiguration): Promise<Analys
       }
     });
 
-    const response = await result.response;
-    const text = response.text();
+    const text = result.text;
+    if (!text) throw new Error("No response from AI");
     return JSON.parse(text) as AnalysisResult;
   } catch (error) {
     console.error("BIOSCAN_ERROR:", error);
@@ -81,21 +83,22 @@ export const visualizeCyborg = async (config: CyborgConfiguration, style: string
   console.log("NEXUS_VISUAL: Requesting generation via gemini-2.0-flash...");
 
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
+    const result = await genAI.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: [{ role: "user", parts: [{ text: prompt }] }]
+    });
 
-    // Look for image data in the response parts
-    if (response.candidates?.[0]?.content?.parts) {
-      for (const part of response.candidates[0].content.parts) {
-        if ((part as any).inlineData) {
+    // Extract image from result.candidates
+    if (result.candidates?.[0]?.content?.parts) {
+      for (const part of result.candidates[0].content.parts) {
+        if (part.inlineData) {
           console.log("NEXUS_VISUAL: SUCCESS! Image data received.");
-          return `data:image/png;base64,${(part as any).inlineData.data}`;
+          return `data:image/png;base64,${part.inlineData.data}`;
         }
       }
     }
 
-    console.warn("NEXUS_VISUAL: No image data in response. Your API key might not have permission for multimodal generation (image creation).");
+    console.warn("NEXUS_VISUAL: No image data in response. Your API key might not have permission for multimodal generation.");
     return null;
   } catch (error) {
     console.error("VISUAL_ERROR:", error);
