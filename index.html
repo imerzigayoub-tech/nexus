@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexus // AI Architect</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background-color: #020202;
+      color: #e0f2fe;
+      overflow: hidden;
+    }
+
+    .font-display {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .font-mono-tech {
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    /* Background Grid Effect */
+    .bg-grid-pattern {
+      background-size: 50px 50px;
+      background-image: linear-gradient(to right, rgba(14, 116, 144, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(14, 116, 144, 0.1) 1px, transparent 1px);
+    }
+
+    /* Sci-Fi Angled Corners */
+    .clip-corner-1 {
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+    }
+
+    .clip-corner-2 {
+      clip-path: polygon(15px 0, 100% 0, 100% 100%, 0 100%, 0 15px);
+    }
+
+    .clip-hex {
+      clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+    }
+
+    .clip-slant-right {
+      clip-path: polygon(0 0, 100% 0, calc(100% - 20px) 100%, 0 100%);
+    }
+
+    /* Holographic Glows */
+    .holo-border {
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.1), inset 0 0 20px rgba(34, 211, 238, 0.05);
+    }
+
+    .holo-text {
+      text-shadow: 0 0 5px rgba(34, 211, 238, 0.5);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #020408;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #0e7490;
+      border-radius: 2px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #22d3ee;
+    }
+  </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "recharts": "https://esm.sh/recharts@^3.7.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.40.0",
+    "three": "https://esm.sh/three@0.182.0",
+    "three/addons/": "https://esm.sh/three@0.182.0/examples/jsm/",
+    "fflate": "https://esm.sh/fflate@0.8.2"
+  }
+}
+</script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>
