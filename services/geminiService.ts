@@ -5,6 +5,7 @@ import { CyborgConfiguration, AnalysisResult } from "../types";
 const getClient = () => {
   // Try all possible environment variable sources
   const apiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY ||
+    (process.env as any).VITE_GEMINI_API_KEY ||
     (process.env as any).API_KEY ||
     (process.env as any).GEMINI_API_KEY;
 
@@ -12,6 +13,10 @@ const getClient = () => {
     console.warn("NEXUS_AI: API Key missing. Service entering standby.");
     return null;
   }
+
+  // Debug: Log the first 4 chars of the key to help troubleshoot Netlify
+  console.log(`NEXUS_AI: Key detected [${apiKey.substring(0, 4)}...]`);
+
   return new GoogleGenAI(apiKey);
 };
 
